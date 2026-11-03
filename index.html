@@ -1,0 +1,272 @@
+<title>Bunbun's Week</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Layout: week as day columns on wide screens, stacked day cards on phones; colour = activity type */
+:root{
+  --bg:#f6f4fb; --chip:#f3f1f8; --surface:#ffffff; --fg:#26213a; --muted:#6b6584; --line:#e4e0f0;
+  --accent:#6a4fd8;
+  --school:#e3ecfb; --school-ink:#2d5bb3;
+  --chinese:#fde7d6; --chinese-ink:#b4531a;
+  --art:#dff3f5; --art-ink:#1d6f7a;
+  --piano:#e2f4ea; --piano-ink:#1f7a4c;
+  --dance:#f1e6fd; --dance-ink:#7a3fc4;
+  --hw:#fdf3c4; --hw-ink:#7a5d00;
+  --eve:#e6e8f5; --eve-ink:#34386b; --play:#ffdcea; --play-ink:#c0256f;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"Nunito Sans", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17141f; --chip:#ece8f4; --surface:#211d2c; --fg:#ece9f5; --muted:#a39db8; --line:#332e42; --accent:#a893ff;
+  --school:#1d2a42; --school-ink:#9cbcf5; --chinese:#3a2618; --chinese-ink:#f5b48a;
+  --art:#163238; --art-ink:#8fd6df; --piano:#17322a; --piano-ink:#86d9ad; --dance:#2c1f40; --dance-ink:#c9a6f7; --hw:#352d10; --hw-ink:#f2d36b; --eve:#24263d; --eve-ink:#c3c7f0; --play:#3f1a2e; --play-ink:#ff9ccb;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17141f; --chip:#ece8f4; --surface:#211d2c; --fg:#ece9f5; --muted:#a39db8; --line:#332e42; --accent:#a893ff;
+  --school:#1d2a42; --school-ink:#9cbcf5; --chinese:#3a2618; --chinese-ink:#f5b48a;
+  --art:#163238; --art-ink:#8fd6df; --piano:#17322a; --piano-ink:#86d9ad; --dance:#2c1f40; --dance-ink:#c9a6f7; --hw:#352d10; --hw-ink:#f2d36b; --eve:#24263d; --eve-ink:#c3c7f0; --play:#3f1a2e; --play-ink:#ff9ccb;
+  color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.45}
+.wrap{max-width:1500px;margin:0 auto;padding-block:24px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:20px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,40px);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.rule b{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.rule span{font-weight:600}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:1200px){
+  .week{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;
+    margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+    padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-bottom:6px;
+    scroll-padding-inline:max(16px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch}
+  .day{flex:0 0 min(300px,82%);scroll-snap-align:start}
+  .hint{display:block}
+}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.day.today{border:2px solid var(--accent);padding:13px}
+.dh{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.dh h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0}
+.tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.uniform{font-size:13px;color:var(--muted)}
+.uniform strong{color:var(--fg);font-weight:700}
+.outfits{display:flex;align-items:center;gap:5px}
+.pic{width:44px;height:44px;border-radius:12px;background:var(--chip);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.pic svg{width:34px;height:34px}
+.sep{width:1px;align-self:stretch;background:var(--line);margin:4px 4px}
+.outfits{flex-wrap:wrap}
+.then{color:var(--muted);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.legend div{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--muted)}
+.legend .pic{width:24px;height:24px;border-radius:6px;border:0;background:transparent}.legend .pic svg{width:22px;height:22px}
+.slots{display:flex;flex-direction:column;gap:6px}
+.slot{border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:2px}
+.slot .t{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px}
+.slot .n{font-weight:700;font-size:15px}
+.slot .x{font-size:13px;opacity:.9}
+.go{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.go span{font-size:11.5px;white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums;background:var(--surface);color:var(--fg);border-radius:999px;padding:2px 7px}
+.go i{font-style:normal;font-weight:600;color:var(--muted)}
+.rest{background:transparent;color:var(--muted);border:1.5px dotted var(--line);padding-block:5px}
+.eve{background:var(--eve);color:var(--eve-ink)}
+.play{background:var(--play);color:var(--play-ink)}
+.sleep{background:var(--eve-ink);color:var(--eve)}
+.slot{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:9px}
+.slot>:not(.ico){grid-column:2}
+.hd{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px}
+.hd .t{font-size:13px}
+.ico{grid-column:1;grid-row:1 / span 2;width:22px;height:22px;align-self:center}
+.slot.minor{background:transparent;color:var(--muted);padding:1px 10px;border:0}
+.minor .hd .t{font-size:11px;font-weight:600}
+.minor .n{font-size:12px;font-weight:500}
+.minor .ico{width:14px;height:14px;opacity:.8}
+.subj{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.subj span{font-size:11.5px;font-weight:700;border:1.5px solid currentColor;border-radius:999px;padding:1px 8px;white-space:nowrap}
+.school{background:var(--school);color:var(--school-ink)}
+.chinese{background:var(--school);color:var(--school-ink)}
+.art{background:var(--piano);color:var(--piano-ink)}
+.piano{background:var(--piano);color:var(--piano-ink)}
+.dance{background:var(--piano);color:var(--piano-ink)}
+.hw{background:var(--hw);color:var(--hw-ink)}
+.practice{background:var(--piano);color:var(--piano-ink)}
+.bring{font-size:13px;border-top:1px dashed var(--line);padding-top:8px}
+.bring b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.empty{font-size:13px;color:var(--muted);font-style:italic}
+.hint{display:none;font-size:12px;color:var(--muted);margin:-8px 0 0}
+.notes{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.notes h3{font-family:var(--display);font-size:17px;margin:0 0 6px}
+.notes ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;max-width:70ch}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="u-school" viewBox="0 0 48 48"><path d="M15 27H33L40.5 45Q24 47.5 7.5 45Z" fill="#1c2a4a" stroke="#0e1830" stroke-width="1.1" stroke-linejoin="round"/><path d="M20 28.5 16.8 45.5M24 28.5V46.3M28 28.5 31.2 45.5" stroke="#0e1830" stroke-width=".9"/><path d="M18 5 24 7 30 5 39 9 37 16 33 14V27H15V14L11 16 9 9Z" fill="#1c2a4a" stroke="#0e1830" stroke-width="1.1" stroke-linejoin="round"/><path d="M9.8 12.4 12.1 15.4M38.2 12.4 35.9 15.4" stroke="#fff" stroke-width="1.1"/><path d="M18.5 2.8H29.5V6.4L24 8.2 18.5 6.4Z" fill="#1c2a4a" stroke="#0e1830" stroke-width="1"/><path d="M22.6 7.6H25.4V16.4H22.6Z" fill="#d23a3f"/><circle cx="24" cy="10" r=".75" fill="#fff"/><circle cx="24" cy="12.5" r=".75" fill="#fff"/><circle cx="24" cy="15" r=".75" fill="#fff"/><circle cx="29.6" cy="12.4" r="2.3" fill="#1c2a4a" stroke="#9fb4e0" stroke-width=".9"/><path d="M15.4 20.4H32.6" stroke="#d23a3f" stroke-width="1.2"/><path d="M15.4 22.6H32.6M15.4 24.6H32.6M15.4 26.4H32.6" stroke="#fff" stroke-width="1"/></symbol>
+  <symbol id="u-pe" viewBox="0 0 48 48"><path d="M17 4 24 6 31 4 41 9 38 17 34 15V27H14V15L10 17 7 9Z" fill="#2a4fd0" stroke="#173a8c" stroke-width="1.1" stroke-linejoin="round"/><path d="M16 4.6 8.2 8.6 9.4 12.4 17 7.6ZM32 4.6 39.8 8.6 38.6 12.4 31 7.6Z" fill="#fff"/><path d="M14 15.5H17.2V27H14ZM30.8 15.5H34V27H30.8Z" fill="#e0262f"/><path d="M21 5.4 24 9.5 27 5.4" fill="none" stroke="#fff" stroke-width="1.2"/><circle cx="28.5" cy="12.5" r="1.6" fill="none" stroke="#fff" stroke-width="1"/><path d="M15 29H33L37 46H11Z" fill="#2a4fd0" stroke="#173a8c" stroke-width="1.1" stroke-linejoin="round"/><path d="M15.6 31.5 11.2 45.5H17L19 33ZM32.4 31.5 36.8 45.5H31L29 33Z" fill="#fff"/><path d="M15.2 29.6H19.5L16.6 33.6ZM32.8 29.6H28.5L31.4 33.6Z" fill="#e0262f"/></symbol>
+  <symbol id="u-cpe" viewBox="0 0 48 48"><path d="M15 6 24 8 33 6 41 10 38 16 34 15V25H14V15L10 16 7 10Z" fill="#2a5fd6" stroke="#173a8c" stroke-width="1.1" stroke-linejoin="round"/><path d="M15 6 24 8 33 6 41 10 38 16 34 15V14H14V15L10 16 7 10Z" fill="#f4b81c" stroke="#b07a00" stroke-width="1" stroke-linejoin="round"/><path d="M18.8 6.6Q24 10.6 29.2 6.6" fill="none" stroke="#b07a00" stroke-width="1.4"/><rect x="14" y="24" width="20" height="4.2" fill="#f4b81c" stroke="#b07a00" stroke-width="1"/><text x="27" y="20" font-size="3.6" font-family="sans-serif" font-weight="700" fill="#f4b81c">PLK</text><path d="M14.5 29.6H33.5L35 45H26L24 36.5 22 45H13Z" fill="#2a5fd6" stroke="#173a8c" stroke-width="1.1" stroke-linejoin="round"/><path d="M15.4 30.4 14 44.2M32.6 30.4 34 44.2" stroke="#f4d03f" stroke-width="1"/></symbol>
+  <symbol id="u-dress" viewBox="0 0 48 48"><path d="M17 8 10 10.5 4.5 17.5 10 21 13 18.5 9 44.5H39L35 18.5 38 21 43.5 17.5 38 10.5 31 8Z" fill="#e8505e" stroke="#a8303b" stroke-width="1.2" stroke-linejoin="round"/><path d="M5.2 17 10.4 20.4M42.8 17 37.6 20.4" stroke="#fff" stroke-width="1.4"/><circle cx="19.8" cy="10.8" r="4.4" fill="#fff" stroke="#a8303b" stroke-width=".9"/><circle cx="28.2" cy="10.8" r="4.4" fill="#fff" stroke="#a8303b" stroke-width=".9"/><path d="M21 8.2Q24 10 27 8.2" fill="#e8505e" stroke="#a8303b" stroke-width=".9"/><path d="M27.5 18h5v3q0 2.6-2.5 3.6-2.5-1-2.5-3.6Z" fill="none" stroke="#fff" stroke-width="1"/><path d="M13 31h8v6q0 2.5-2.5 2.5h-3Q13 39.5 13 37Z" fill="none" stroke="#fff" stroke-width="1.1"/></symbol>
+  <symbol id="b-art" viewBox="0 0 48 48"><path d="M15 16Q15 5 24 5Q33 5 33 16" fill="none" stroke="#5cc23f" stroke-width="3" stroke-linecap="round"/><rect x="5" y="15" width="38" height="28" rx="1.5" fill="#f6f2e8" stroke="#b5ad98" stroke-width="1.2"/><path d="M5.6 19H42.4" stroke="#d8d1bf" stroke-width="1"/><path d="M10 25H25M10 30.5H27M10 36H22" stroke="#4caf50" stroke-width="2.8" stroke-linecap="round"/><circle cx="34" cy="28" r="3.6" fill="none" stroke="#4caf50" stroke-width="1.5"/><path d="M32.6 32.2V35H35.4V32.2M33 36.5H35" stroke="#4caf50" stroke-width="1.3" stroke-linecap="round"/><path d="M34 21.8V23M28.9 24.2 29.8 25M39.1 24.2 38.2 25M27.8 28.6H29M40.2 28.6H39" stroke="#4caf50" stroke-width="1.2" stroke-linecap="round"/></symbol>
+  <symbol id="b-piano" viewBox="0 0 48 48"><path d="M17 17Q17 7 24 7Q31 7 31 17" fill="none" stroke="#1d2b3a" stroke-width="2.2"/><rect x="8" y="16" width="32" height="27" rx="3" fill="#34495e" stroke="#1d2b3a" stroke-width="1.2"/><rect x="12" y="29" width="24" height="10" fill="#fff" stroke="#1d2b3a" stroke-width=".8"/><path d="M16.8 29v10M21.6 29v10M26.4 29v10M31.2 29v10" stroke="#1d2b3a" stroke-width=".8"/><path d="M15.4 29h2.8v6h-2.8zM20.2 29h2.8v6h-2.8zM29.8 29h2.8v6h-2.8z" fill="#1d2b3a"/><path d="M26 26V19.5l5-1.5v6" fill="none" stroke="#fff" stroke-width="1.4"/><circle cx="24.6" cy="26" r="1.6" fill="#fff"/><circle cx="29.6" cy="24" r="1.6" fill="#fff"/></symbol>
+  <symbol id="b-library" viewBox="0 0 48 48"><path d="M16 16Q16 5 24 5Q32 5 32 16" fill="none" stroke="#1a3070" stroke-width="2.6" stroke-linecap="round"/><rect x="4.5" y="15" width="39" height="28" rx="2" fill="#24408f" stroke="#142a66" stroke-width="1.2"/><path d="M6 18H42" stroke="#142a66" stroke-width="1.2"/><rect x="40.5" y="16.6" width="1.6" height="3" rx=".4" fill="#9fb4e0"/><rect x="14.6" y="14.4" width="2.8" height="3" fill="#1a3070"/><rect x="30.6" y="14.4" width="2.8" height="3" fill="#1a3070"/><rect x="8" y="31" width="11" height="8" rx=".8" fill="#1b1b1b"/><rect x="9.3" y="32.3" width="8.4" height="5.4" fill="#ece6f2"/><path d="M10.5 34H15M10.5 36H13.5" stroke="#8a7f99" stroke-width=".7"/><ellipse cx="33.00" cy="27.30" rx="1" ry="1.8" transform="rotate(0 33.00 27.30)" fill="none" stroke="#fff" stroke-width=".7"/><ellipse cx="35.09" cy="28.82" rx="1" ry="1.8" transform="rotate(72 35.09 28.82)" fill="none" stroke="#fff" stroke-width=".7"/><ellipse cx="34.29" cy="31.28" rx="1" ry="1.8" transform="rotate(144 34.29 31.28)" fill="none" stroke="#fff" stroke-width=".7"/><ellipse cx="31.71" cy="31.28" rx="1" ry="1.8" transform="rotate(216 31.71 31.28)" fill="none" stroke="#fff" stroke-width=".7"/><ellipse cx="30.91" cy="28.82" rx="1" ry="1.8" transform="rotate(288 30.91 28.82)" fill="none" stroke="#fff" stroke-width=".7"/><path d="M30 35.2H39M30.5 37.2H38.5M31.5 39.2H37.5" stroke="#fff" stroke-width=".9" stroke-linecap="round"/></symbol>
+  <symbol id="b-dance" viewBox="0 0 48 48"><path d="M20 4v5M28 4v5" stroke="#7a3fc4" stroke-width="1.8" stroke-linecap="round"/><path d="M19 9Q24 12 29 9L30 19H18Z" fill="#b37ce8" stroke="#7a3fc4" stroke-width="1.1" stroke-linejoin="round"/><path d="M18 19 9 28 13 27 15 30 19 27 22 30 24 27 26 30 29 27 33 30 35 27 39 28 30 19Z" fill="#d9b8f7" stroke="#7a3fc4" stroke-width="1.1" stroke-linejoin="round"/><ellipse cx="15" cy="40" rx="6.5" ry="3.2" fill="#f7b6cf" stroke="#c2407e" stroke-width="1"/><ellipse cx="32" cy="40" rx="6.5" ry="3.2" fill="#f7b6cf" stroke="#c2407e" stroke-width="1"/><path d="M13 38q2-4 5-2M30 38q2-4 5-2" fill="none" stroke="#c2407e" stroke-width="1"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 10.5 12 4.5l9 6M5 10v10h14V10M10 20v-5h4v5M12 4.5V1.8l3 1-3 1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chinese" viewBox="0 0 24 24"><path d="M5 8h14v7H5zM12 3v18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-homework" viewBox="0 0 24 24"><path d="M5 3h10v18H5zM8 7h4M8 10h4M8 13h2M14 19l6-6 2 2-6 6h-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-piano" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17" cy="16" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-art" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5 1-1.5 2-1.5h2a4 4 0 0 0 4-4C21 6.5 17 3 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10" cy="7" r="1.2" fill="currentColor"/><circle cx="15" cy="7" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-dance" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6v6M6 8.5l6 1.5 6-1.5M7 15h10l-2-3H9zM10 15l-2 6M14 15l2 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M3 13h8v8H3zM13 13h8v8h-8zM8 4h8v8H8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shower" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1M8 9h7a4 4 0 0 0-7 0zM10 13v1.5M13 13v2M16 13v1.5M11.5 18v1.5M14.5 18v1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-dinner" viewBox="0 0 24 24"><path d="M3 12h18a9 8 0 0 1-18 0zM10 9l8-6M13 9l8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-teeth" viewBox="0 0 24 24"><path d="M7 3C5 3 3 5 3 8c0 3 1 5 2 8s1 5 2.5 5 1.5-4 2.5-6c.5-1 3.5-1 4 0 1 2 1 6 2.5 6s1.5-2 2.5-5 2-5 2-8c0-3-2-5-4-5-2 0-3 1-5 1S9 3 7 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5zM17 3v3M15.5 4.5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 7V4M5.6 10.6 3.8 8.8M18.4 10.6l1.8-1.8M6 21h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cup" viewBox="0 0 24 24"><path d="M4 9h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 11h1.5a2.5 2.5 0 0 1 0 5H16M8 3v3M12 3v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3 12 5l4-2 5 3-2 4-2-1v11H7V9l-2 1-2-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+  <h1>Bunbun's Week</h1>
+
+  <section class="legend" aria-label="Uniforms and bags">
+    <div><span class="pic" title="FIS school uniform" aria-label="FIS school uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-school"/></svg></span>FIS</div>
+    <div><span class="pic" title="FIS PE uniform" aria-label="FIS PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-pe"/></svg></span>FIS PE</div>
+    <div><span class="pic" title="Chinese school pink dress" aria-label="Chinese school pink dress" role="img"><svg viewBox="0 0 48 48"><use href="#u-dress"/></svg></span>Chinese dress</div>
+    <div><span class="pic" title="Chinese school PE uniform" aria-label="Chinese school PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-cpe"/></svg></span>Chinese PE</div>
+      <div><span class="pic" title="Art bag" aria-label="Art bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-art"/></svg></span>Art bag</div>
+    <div><span class="pic" title="Piano bag" aria-label="Piano bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-piano"/></svg></span>Piano bag</div>
+    <div><span class="pic" title="FIS library book bag" aria-label="FIS library book bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-library"/></svg></span>Library bag</div>
+    <div><span class="pic" title="Dance dress, jacket and shoes" aria-label="Dance dress, jacket and shoes" role="img"><svg viewBox="0 0 48 48"><use href="#b-dance"/></svg></span>Dance kit</div>
+</section>
+
+  <p class="hint">Swipe left or right to see each day</p>
+  <section class="week" id="week">
+    <article class="day" data-d="1">
+      <div class="dh"><h2>Mon</h2><span class="tag"></span></div>
+      <div class="outfits"><span class="pic" title="FIS school uniform" aria-label="FIS school uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-school"/></svg></span><span class="then" aria-hidden="true">→</span><span class="pic" title="Chinese school PE uniform" aria-label="Chinese school PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-cpe"/></svg></span></div>
+      <div class="slots">
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg><span class="hd"><span class="t">6:45 – 6:55</span><span class="n">Wake up</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg><span class="hd"><span class="t">6:55 – 7:15</span><span class="n">Breakfast</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">7:15 – 7:20</span><span class="n">Brush teeth</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg><span class="hd"><span class="t">7:20 – 7:30</span><span class="n">Get dressed</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="hd"><span class="t">7:30 – 7:35</span><span class="n">Shoes &amp; bag check</span></span></div>
+        <div class="slot school"><svg class="ico" aria-hidden="true"><use href="#i-school"/></svg><span class="hd"><span class="t">7:55 – 2:15</span><span class="n">FIS</span></span><span class="go"><span><i>Leave</i> 7:35</span><span><i>Pickup, leave</i> 1:55</span></span><span class="subj"><span>English</span></span></div>
+        <div class="slot chinese"><svg class="ico" aria-hidden="true"><use href="#i-chinese"/></svg><span class="hd"><span class="t">1:30 – 4:30</span><span class="n">Chinese school</span></span><span class="go"><span><i>Pickup, leave</i> 4:10</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">4:50 – 5:10</span><span class="n">Play time</span></span></div>
+        <div class="slot hw"><svg class="ico" aria-hidden="true"><use href="#i-homework"/></svg><span class="hd"><span class="t">5:10 – 5:55</span><span class="n">Homework</span></span></div>
+        <div class="slot practice"><svg class="ico" aria-hidden="true"><use href="#i-piano"/></svg><span class="hd"><span class="t">5:55 – 6:25</span><span class="n">Piano practice</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">6:25 – 7:00</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shower"/></svg><span class="hd"><span class="t">7:00 – 7:20</span><span class="n">Shower</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-dinner"/></svg><span class="hd"><span class="t">7:20 – 7:50</span><span class="n">Dinner</span></span></div>
+        <div class="slot play minor"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">7:50 – 8:20</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">8:20 – 8:30</span><span class="n">Teeth &amp; get ready</span></span></div>
+        <div class="slot sleep minor"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg><span class="hd"><span class="t">8:30</span><span class="n">Sleep</span></span></div>
+      </div>
+    </article>
+
+    <article class="day" data-d="2">
+      <div class="dh"><h2>Tue</h2><span class="tag"></span></div>
+      <div class="outfits"><span class="pic" title="FIS PE uniform" aria-label="FIS PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-pe"/></svg></span><span class="sep" aria-hidden="true"></span><span class="pic" title="Art bag" aria-label="Art bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-art"/></svg></span></div>
+      <div class="slots">
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg><span class="hd"><span class="t">6:45 – 6:55</span><span class="n">Wake up</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg><span class="hd"><span class="t">6:55 – 7:15</span><span class="n">Breakfast</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">7:15 – 7:20</span><span class="n">Brush teeth</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg><span class="hd"><span class="t">7:20 – 7:30</span><span class="n">Get dressed</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="hd"><span class="t">7:30 – 7:35</span><span class="n">Shoes &amp; bag check</span></span></div>
+        <div class="slot school"><svg class="ico" aria-hidden="true"><use href="#i-school"/></svg><span class="hd"><span class="t">7:55 – 3:30</span><span class="n">FIS + ECA</span></span><span class="go"><span><i>Leave</i> 7:35</span><span><i>Pickup, leave</i> 3:10</span></span><span class="subj"><span>French</span></span></div>
+        <div class="slot art"><svg class="ico" aria-hidden="true"><use href="#i-art"/></svg><span class="hd"><span class="t">4:00 – 5:15</span><span class="n">Art class</span></span><span class="go"><span><i>Straight from FIS</i></span><span><i>Pickup, leave</i> 5:08</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">5:20 – 5:40</span><span class="n">Play time</span></span></div>
+        <div class="slot hw"><svg class="ico" aria-hidden="true"><use href="#i-homework"/></svg><span class="hd"><span class="t">5:40 – 6:25</span><span class="n">Homework</span></span></div>
+        <div class="slot practice"><svg class="ico" aria-hidden="true"><use href="#i-piano"/></svg><span class="hd"><span class="t">6:25 – 6:45</span><span class="n">Piano practice</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">6:45 – 7:00</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shower"/></svg><span class="hd"><span class="t">7:00 – 7:20</span><span class="n">Shower</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-dinner"/></svg><span class="hd"><span class="t">7:20 – 7:50</span><span class="n">Dinner</span></span></div>
+        <div class="slot play minor"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">7:50 – 8:20</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">8:20 – 8:30</span><span class="n">Teeth &amp; get ready</span></span></div>
+        <div class="slot sleep minor"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg><span class="hd"><span class="t">8:30</span><span class="n">Sleep</span></span></div>
+      </div>
+    </article>
+
+    <article class="day" data-d="3">
+      <div class="dh"><h2>Wed</h2><span class="tag"></span></div>
+      <div class="outfits"><span class="pic" title="FIS PE uniform" aria-label="FIS PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-pe"/></svg></span><span class="then" aria-hidden="true">→</span><span class="pic" title="Chinese school PE uniform" aria-label="Chinese school PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-cpe"/></svg></span><span class="sep" aria-hidden="true"></span><span class="pic" title="Piano bag" aria-label="Piano bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-piano"/></svg></span></div>
+      <div class="slots">
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg><span class="hd"><span class="t">6:45 – 6:55</span><span class="n">Wake up</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg><span class="hd"><span class="t">6:55 – 7:15</span><span class="n">Breakfast</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">7:15 – 7:20</span><span class="n">Brush teeth</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg><span class="hd"><span class="t">7:20 – 7:30</span><span class="n">Get dressed</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="hd"><span class="t">7:30 – 7:35</span><span class="n">Shoes &amp; bag check</span></span></div>
+        <div class="slot school"><svg class="ico" aria-hidden="true"><use href="#i-school"/></svg><span class="hd"><span class="t">7:55 – 2:15</span><span class="n">FIS</span></span><span class="go"><span><i>Leave</i> 7:35</span><span><i>Pickup, leave</i> 1:55</span></span><span class="subj"><span>English</span></span></div>
+        <div class="slot chinese"><svg class="ico" aria-hidden="true"><use href="#i-chinese"/></svg><span class="hd"><span class="t">1:30 – 4:30</span><span class="n">Chinese school</span></span><span class="go"><span><i>Pickup, leave</i> 4:10</span></span></div>
+        <div class="slot piano"><svg class="ico" aria-hidden="true"><use href="#i-piano"/></svg><span class="hd"><span class="t">5:00 – 5:30</span><span class="n">Piano lesson</span></span><span class="go"><span><i>Leave</i> 4:53</span><span><i>Pickup, leave</i> 5:23</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">5:40 – 6:00</span><span class="n">Play time</span></span></div>
+        <div class="slot hw"><svg class="ico" aria-hidden="true"><use href="#i-homework"/></svg><span class="hd"><span class="t">6:00 – 6:45</span><span class="n">Homework</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">6:45 – 7:00</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shower"/></svg><span class="hd"><span class="t">7:00 – 7:20</span><span class="n">Shower</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-dinner"/></svg><span class="hd"><span class="t">7:20 – 7:50</span><span class="n">Dinner</span></span></div>
+        <div class="slot play minor"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">7:50 – 8:20</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">8:20 – 8:30</span><span class="n">Teeth &amp; get ready</span></span></div>
+        <div class="slot sleep minor"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg><span class="hd"><span class="t">8:30</span><span class="n">Sleep</span></span></div>
+      </div>
+    </article>
+
+    <article class="day" data-d="4">
+      <div class="dh"><h2>Thu</h2><span class="tag"></span></div>
+      <div class="outfits"><span class="pic" title="FIS school uniform" aria-label="FIS school uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-school"/></svg></span><span class="then" aria-hidden="true">→</span><span class="pic" title="Chinese school pink dress" aria-label="Chinese school pink dress" role="img"><svg viewBox="0 0 48 48"><use href="#u-dress"/></svg></span><span class="sep" aria-hidden="true"></span><span class="pic" title="FIS library book bag" aria-label="FIS library book bag" role="img"><svg viewBox="0 0 48 48"><use href="#b-library"/></svg></span></div>
+      <div class="slots">
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg><span class="hd"><span class="t">6:45 – 6:55</span><span class="n">Wake up</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg><span class="hd"><span class="t">6:55 – 7:15</span><span class="n">Breakfast</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">7:15 – 7:20</span><span class="n">Brush teeth</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg><span class="hd"><span class="t">7:20 – 7:30</span><span class="n">Get dressed</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="hd"><span class="t">7:30 – 7:35</span><span class="n">Shoes &amp; bag check</span></span></div>
+        <div class="slot school"><svg class="ico" aria-hidden="true"><use href="#i-school"/></svg><span class="hd"><span class="t">7:55 – 2:15</span><span class="n">FIS</span></span><span class="go"><span><i>Leave</i> 7:35</span><span><i>Pickup, leave</i> 1:55</span></span><span class="subj"><span>French</span><span>English</span><span>Spelling test</span><span>Science</span></span></div>
+        <div class="slot chinese"><svg class="ico" aria-hidden="true"><use href="#i-chinese"/></svg><span class="hd"><span class="t">1:30 – 4:30</span><span class="n">Chinese school</span></span><span class="go"><span><i>Pickup, leave</i> 4:10</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">4:50 – 5:10</span><span class="n">Play time</span></span></div>
+        <div class="slot hw"><svg class="ico" aria-hidden="true"><use href="#i-homework"/></svg><span class="hd"><span class="t">5:10 – 5:55</span><span class="n">Homework</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">5:55 – 7:00</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shower"/></svg><span class="hd"><span class="t">7:00 – 7:20</span><span class="n">Shower</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-dinner"/></svg><span class="hd"><span class="t">7:20 – 7:50</span><span class="n">Dinner</span></span></div>
+        <div class="slot play minor"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">7:50 – 8:20</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">8:20 – 8:30</span><span class="n">Teeth &amp; get ready</span></span></div>
+        <div class="slot sleep minor"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg><span class="hd"><span class="t">8:30</span><span class="n">Sleep</span></span></div>
+      </div>
+    </article>
+
+    <article class="day" data-d="5">
+      <div class="dh"><h2>Fri</h2><span class="tag"></span></div>
+      <div class="outfits"><span class="pic" title="FIS school uniform" aria-label="FIS school uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-school"/></svg></span><span class="then" aria-hidden="true">→</span><span class="pic" title="Chinese school PE uniform" aria-label="Chinese school PE uniform" role="img"><svg viewBox="0 0 48 48"><use href="#u-cpe"/></svg></span><span class="sep" aria-hidden="true"></span><span class="pic" title="Dance dress, jacket and shoes" aria-label="Dance dress, jacket and shoes" role="img"><svg viewBox="0 0 48 48"><use href="#b-dance"/></svg></span></div>
+      <div class="slots">
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-sun"/></svg><span class="hd"><span class="t">6:45 – 6:55</span><span class="n">Wake up</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg><span class="hd"><span class="t">6:55 – 7:15</span><span class="n">Breakfast</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">7:15 – 7:20</span><span class="n">Brush teeth</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg><span class="hd"><span class="t">7:20 – 7:30</span><span class="n">Get dressed</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><span class="hd"><span class="t">7:30 – 7:35</span><span class="n">Shoes &amp; bag check</span></span></div>
+        <div class="slot school"><svg class="ico" aria-hidden="true"><use href="#i-school"/></svg><span class="hd"><span class="t">7:55 – 2:15</span><span class="n">FIS</span></span><span class="go"><span><i>Leave</i> 7:35</span><span><i>Pickup, leave</i> 1:55</span></span><span class="subj"><span>French</span><span>Chinese</span></span></div>
+        <div class="slot chinese"><svg class="ico" aria-hidden="true"><use href="#i-chinese"/></svg><span class="hd"><span class="t">1:30 – 4:30</span><span class="n">Chinese school</span></span><span class="go"><span><i>Pickup, leave</i> 4:10</span></span></div>
+        <div class="slot dance"><svg class="ico" aria-hidden="true"><use href="#i-dance"/></svg><span class="hd"><span class="t">5:00 – 5:45</span><span class="n">Chinese dance</span></span><span class="go"><span><i>Leave</i> 4:53</span><span><i>Pickup, leave</i> 5:38</span></span></div>
+        <div class="slot play"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">5:50 – 7:00</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-shower"/></svg><span class="hd"><span class="t">7:00 – 7:20</span><span class="n">Shower</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-dinner"/></svg><span class="hd"><span class="t">7:20 – 7:50</span><span class="n">Dinner</span></span></div>
+        <div class="slot play minor"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span class="hd"><span class="t">7:50 – 8:20</span><span class="n">Play time</span></span></div>
+        <div class="slot eve minor"><svg class="ico" aria-hidden="true"><use href="#i-teeth"/></svg><span class="hd"><span class="t">8:20 – 8:30</span><span class="n">Teeth &amp; get ready</span></span></div>
+        <div class="slot sleep minor"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg><span class="hd"><span class="t">8:30</span><span class="n">Sleep</span></span></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="notes">
+    <h3>Good to know</h3>
+    <ul>
+      <li>Chinese school officially starts at 1:30. Bunbun goes straight there after the 2:15 FIS pickup and arrives late, as agreed with the school.</li>
+      <li>Tuesday ECA may change in term 2, which could bring Chinese school back on Tuesdays.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+  var d=new Date().getDay();
+  var el=document.querySelector('.day[data-d="'+d+'"]');
+  if(el){el.classList.add('today');el.querySelector('.tag').textContent='Today';var w=document.getElementById('week');if(w.scrollWidth>w.clientWidth){w.scrollLeft=el.offsetLeft-w.offsetLeft-16;}}
+})();
+</script>
