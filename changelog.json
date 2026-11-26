@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.1.0",
+    "date": "2026-11-26",
+    "notes": [
+      "The app now asks for a key: the schedule is no longer public and arrives from the private repo once the device is connected."
+    ]
+  },
+  {
     "version": "1.0.1",
     "date": "2026-11-26",
     "notes": [
